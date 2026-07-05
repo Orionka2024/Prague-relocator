@@ -1,0 +1,33 @@
+[0:00 — HOOK]
+Moving to a new country is incredibly exciting, but the paperwork can quickly turn into a nightmare. If you are relocating to Prague, finding official, accurate information on visas, local registration, and health insurance across fragmented government websites can feel almost impossible. (pause) Today, I'm thrilled to show you Prague Relocator, an intelligent digital assistant designed to make that journey stress-free, secure, and fully guided.
+
+[0:20 — WHAT IT IS]
+Prague Relocator is built on Google's Agent Development Kit, or ADK, and is categorized as an "Agent for Good". It provides personalized relocation guides, required document checklists, and local administration advice, all grounded directly in official Czech Ministry of the Interior regulations.
+
+[0:40 — SHOW THE BANNER]
+(show assets/cover_page_banner.png)
+As you can see on the screen, this is our project cover banner. The assistant is structured around three core pillars: secure PII scrubbing to protect user data, grounding in official MVCR regulations, and interactive, structured document checklists.
+
+[1:00 — ARCHITECTURE]
+(show assets/architecture_diagram.png)
+Let's take a look at the system architecture behind the scenes. When a user sends a message, it doesn't go straight to the model. Instead, it enters our ADK 2.0 Workflow graph. First, it goes through the Security Checkpoint node. This node scrubs sensitive information like passport numbers and checks for prompt injections. If a threat is found, it routes to a security event handler and terminates. If clean, the input flows to our human-in-the-loop Input Collector. The collector evaluates if we have the user's nationality and purpose of stay. If anything is missing, it pauses the workflow using RequestInput to ask the user. Once we have the required details, they are saved to session state, and the clean request proceeds to the Orchestrator. The Orchestrator acts as our central coordinator, delegating tasks to two specialist sub-agents: the Visa Expert and the Settling-In Expert, which both query a local Model Context Protocol, or MCP server, to retrieve exact government office locations, visa requirements, and insurance rules. Finally, the response is formatted and presented to the user.
+
+[2:00 — LIVE DEMO]
+(switch to playground at localhost:18081)
+Let's see this in action. I'm going to start by typing: "Hi, I am looking to move to Prague." (pause)
+Notice how the workflow runs and pauses at the Input Collector. Because we didn't specify our nationality, it interrupts and asks: "Ahoj! Welcome to Prague Relocator. What is your nationality?"
+I will respond: "Indian".
+Now, it stores the nationality in state, but still needs my purpose of stay, so it prompts: "What is your purpose of stay in Prague?"
+I'll type: "Study".
+Now that the workflow has both inputs, it proceeds to the Orchestrator. The Orchestrator delegates to the Visa Expert, which queries the MCP server. (pause)
+And look at the result! It outputs a comprehensive guide for a Long-term Visa for the Purpose of Study, listing the exact processing times and required documents—such as the study confirmation, proof of funds, and police clearance certificate translated to Czech.
+Let's test another query. I will type: "I am a freelance developer from the USA. How can I work in Prague?"
+This time, since the nationality and purpose are already in the query, the Input Collector doesn't interrupt. The Orchestrator immediately calls the Visa Expert, which uses the MCP server to return details about the Czech Trade License, also known as the "Živnostenský list" or "Živno" visa, and lists the required 200,000 CZK funding proof.
+Finally, if I ask about health insurance: "What health insurance do I need for my student stay, and where is the Foreign Police?" (pause)
+The Orchestrator routes this to the Settling-In Expert, which queries the MCP server and returns the comprehensive private health insurance regulations, along with the Foreign Police office address on Olšanská street.
+
+[3:00 — SECURITY & MCP]
+To protect user privacy, our Security Checkpoint automatically redacts files or inputs containing sensitive details, ensuring that users' passports or personal identifiers never leak. Our MCP server runs locally as a fast, lightweight stdio service, wrapping all official endpoints and databases under four simple, programmatic tools.
+
+[3:30 — IMPACT / CLOSE]
+By combining secure guardrails, deterministic workflows, and expert sub-agent collaboration, Prague Relocator empowers expats, students, and digital nomads to navigate their move to the Czech Republic safely and with full confidence. Thank you!
