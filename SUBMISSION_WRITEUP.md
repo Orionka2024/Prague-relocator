@@ -8,7 +8,7 @@ Moving to a new country can be an administrative nightmare. Foreigners relocatin
 graph TD
     START[User Message] --> SC[Security Checkpoint]
     SC -- Violation --> SE[Security Event Handler]
-    SC -- Clean --> IC[Input Collector (HITL)]
+    SC -- Clean --> IC["Input Collector (HITL)"]
     IC -- Proceed --> OR[Orchestrator Agent]
     OR --> VE[Visa Expert Agent]
     OR --> SE_EXP[Settling Expert Agent]

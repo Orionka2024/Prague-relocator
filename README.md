@@ -24,7 +24,7 @@ make playground        # Opens the UI at http://localhost:18081
 graph TD
     START[User Message] --> SC[Security Checkpoint]
     SC -- Violation --> SE[Security Event Handler]
-    SC -- Clean --> IC[Input Collector (HITL)]
+    SC -- Clean --> IC["Input Collector (HITL)"]
     IC -- Proceed --> OR[Orchestrator Agent]
     OR --> VE[Visa Expert Agent]
     OR --> SE_EXP[Settling Expert Agent]
@@ -94,7 +94,7 @@ graph TD
    git add .
    git commit -m "Initial commit: prague-relocator ADK agent"
    git branch -M main
-   git remote add origin https://github.com/<your-username>/prague-relocator.git
+   git remote add origin https://github.com/Orionka2024/prague-relocator.git
    git push -u origin main
    ```
 
